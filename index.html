@@ -1,495 +1,1308 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SVP-Scooters</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --black:#090909;--dark:#111214;--card:#16181b;--card2:#1b1d21;
-  --border:#242628;--orange:#f56b00;--orange2:#ff8c2a;
-  --white:#f2f0eb;--grey:#777;--lgrey:#aaa;
-}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
-a{text-decoration:none;color:inherit}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVP-Scooters</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:22px 60px;
-  background:rgba(9,9,9,.92);backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(255,255,255,.04);
-  transition:padding .3s;
-}
-nav.scrolled{padding:14px 60px}
-.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;cursor:pointer}
-.nav-logo span{color:var(--orange)}
-.nav-links{display:flex;gap:34px;list-style:none;align-items:center}
-.nav-links li a{
-  font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--lgrey);transition:color .2s;cursor:pointer;position:relative;
-}
-.nav-links li a:hover{color:var(--white)}
-.nav-links li a.active{color:var(--white)}
-.nav-links li a.active::after{
-  content:'';position:absolute;bottom:-4px;left:0;right:0;
-  height:1px;background:var(--orange);
-}
-.nav-cta{
-  background:var(--orange)!important;color:var(--black)!important;
-  padding:10px 20px;border-radius:3px;font-weight:700!important;
-}
-.nav-cta:hover{background:var(--orange2)!important}
-.nav-cta.active::after{display:none!important}
-.nav-toggle{
-  display:none;flex-direction:column;gap:5px;
-  background:none;border:none;cursor:pointer;padding:4px;z-index:201;
-}
-.nav-toggle span{display:block;width:24px;height:2px;background:var(--white);border-radius:2px;transition:.3s}
-.nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.nav-toggle.open span:nth-child(2){opacity:0}
-.nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-.mobile-menu{
-  display:none;position:fixed;inset:0;background:rgba(9,9,9,.97);
-  flex-direction:column;align-items:center;justify-content:center;
-  gap:36px;z-index:199;
-}
-.mobile-menu.open{display:flex}
-.mobile-menu a{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;color:var(--lgrey);cursor:pointer;transition:color .2s}
-.mobile-menu a:hover,.mobile-menu a.active{color:var(--orange)}
+    :root {
+      --black: #090909;
+      --dark: #111214;
+      --card: #16181b;
+      --card2: #1b1d21;
+      --border: #242628;
+      --orange: #f56b00;
+      --orange2: #ff8c2a;
+      --white: #f2f0eb;
+      --grey: #777;
+      --lgrey: #aaa;
+    }
 
-/* ── PAGE CONTAINER ── */
-.page{display:none}
-.page.active{display:block}
+    html {
+      scroll-behavior: smooth;
+    }
 
-/* ── BUTTONS ── */
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--orange);color:var(--black)!important;
-  font-size:12px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;padding:14px 28px;border-radius:3px;
-  cursor:pointer;border:none;font-family:'DM Sans',sans-serif;
-  transition:background .2s,transform .2s;
-}
-.btn-primary:hover{background:var(--orange2);transform:translateY(-2px)}
-.btn-primary svg{transition:transform .2s}
-.btn-primary:hover svg{transform:translateX(4px)}
-.btn-large{padding:18px 36px;font-size:13px}
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:10px;
-  color:var(--lgrey);font-size:12px;font-weight:500;
-  letter-spacing:1.5px;text-transform:uppercase;
-  border:1px solid var(--border);padding:14px 28px;border-radius:3px;
-  cursor:pointer;background:none;font-family:'DM Sans',sans-serif;
-  transition:border-color .2s,color .2s;
-}
-.btn-secondary:hover{border-color:var(--lgrey);color:var(--white)}
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
 
-/* ── TYPOGRAPHY ── */
-.section-label{
-  font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;
-  color:var(--orange);display:flex;align-items:center;gap:10px;margin-bottom:16px;
-}
-.section-label::before{content:'';display:block;width:20px;height:1px;background:var(--orange)}
-.section-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(38px,5vw,64px);line-height:1;color:var(--white);margin-bottom:24px;
-}
-.body-text{font-size:15px;line-height:1.8;color:var(--lgrey);font-weight:300}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* ── HERO (home) ── */
-.hero{
-  min-height:100vh;position:relative;
-  display:flex;flex-direction:column;overflow:hidden;background:var(--black);
-}
-.hero-bg{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 55% 55% at 72% 50%,rgba(245,107,0,.11) 0%,transparent 70%),
-             radial-gradient(ellipse 35% 50% at 15% 85%,rgba(245,107,0,.05) 0%,transparent 60%);
-}
-.hero-grid{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
-  background-size:72px 72px;
-  mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 20%,transparent 100%);
-}
-.hero-visual{
-  position:absolute;right:-20px;top:50%;transform:translateY(-52%);
-  width:52%;max-width:780px;z-index:1;opacity:0.12;
-  animation:floatIn 1.3s .2s ease both;pointer-events:none;
-}
-.hero-content{
-  position:relative;z-index:2;flex:1;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:130px 60px 60px;max-width:680px;
-  animation:fadeUp .9s ease both;
-}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:11px;font-weight:500;letter-spacing:3px;
-  text-transform:uppercase;color:var(--orange);margin-bottom:20px;
-}
-.hero-eyebrow::before{content:'';display:block;width:28px;height:1px;background:var(--orange)}
-.hero-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(70px,11vw,130px);line-height:.9;
-  letter-spacing:1px;color:var(--white);margin-bottom:10px;
-}
-.hero-title span{color:var(--orange)}
-.hero-sub{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(18px,2.5vw,28px);letter-spacing:8px;
-  color:var(--grey);margin-bottom:32px;text-transform:uppercase;
-}
-.hero-desc{font-size:16px;line-height:1.75;color:var(--lgrey);font-weight:300;max-width:460px;margin-bottom:44px}
-.hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.hero-stats{
-  position:relative;z-index:2;
-  display:grid;grid-template-columns:repeat(3,1fr);
-  border-top:1px solid var(--border);
-  animation:fadeUp .9s .35s ease both;
-}
-.stat-item{padding:26px 40px;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--white);line-height:1}
-.stat-num span{color:var(--orange)}
-.stat-label{font-size:11px;color:var(--grey);letter-spacing:1px;margin-top:4px;text-transform:uppercase}
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 60px;
+      background: rgba(9, 9, 9, .92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, .04);
+      transition: padding .3s;
+    }
 
-/* ── USP STRIP ── */
-.usp-strip{
-  background:var(--dark);
-  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  display:flex;align-items:stretch;
-}
-.usp-item{flex:1;padding:32px 40px;display:flex;align-items:center;gap:20px}
-.usp-divider{width:1px;background:var(--border)}
-.usp-icon{color:var(--orange);flex-shrink:0}
-.usp-item strong{display:block;font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
-.usp-item p{font-size:13px;color:var(--grey)}
+    nav.scrolled {
+      padding: 14px 60px;
+    }
 
-/* ── SPLIT ── */
-.split-section{
-  padding:110px 60px;
-  display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;
-}
-.split-image{position:relative}
-.split-img-inner{
-  width:100%;aspect-ratio:4/5;background:var(--card);
-  border:1px solid var(--border);border-radius:4px;overflow:hidden;
-}
-.img-placeholder{
-  width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,#1a1c1f 0%,#0f1012 100%);
-  color:var(--grey);gap:12px;
-}
-.img-placeholder span{font-size:11px;letter-spacing:2px;text-transform:uppercase}
-.split-badge{
-  position:absolute;bottom:-20px;right:-20px;
-  background:var(--orange);color:var(--black);
-  padding:20px 24px;border-radius:3px;
-  font-size:12px;font-weight:700;letter-spacing:1px;
-  text-transform:uppercase;line-height:1.4;text-align:center;
-}
-.split-badge-icon{font-size:32px;line-height:1;margin-bottom:6px}
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      cursor: pointer;
+    }
 
-/* ── SERVICES PREVIEW (home) ── */
-.services-preview{
-  background:var(--dark);padding:90px 60px;
-  border-top:1px solid var(--border);
-}
-.services-preview-header{
-  display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;
-}
-.services-preview-header .section-title{margin-bottom:0}
-.services-grid-home{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:1px;background:var(--border);
-  border:1px solid var(--border);border-radius:4px;overflow:hidden;
-}
-.svc-card{
-  background:var(--card);padding:40px 32px;
-  position:relative;overflow:hidden;transition:background .3s;cursor:default;
-}
-.svc-card:hover{background:var(--card2)}
-.svc-card::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:var(--orange);opacity:0;transition:opacity .3s;
-}
-.svc-card:hover::after{opacity:1}
-.svc-num{
-  font-family:'Bebas Neue',sans-serif;font-size:52px;
-  color:var(--border);line-height:1;margin-bottom:24px;transition:color .3s;
-}
-.svc-card:hover .svc-num{color:rgba(245,107,0,.2)}
-.svc-card h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:12px}
-.svc-card p{font-size:13px;line-height:1.7;color:var(--grey);font-weight:300}
+    .nav-logo span {
+      color: var(--orange);
+    }
 
-/* ── CTA BAND ── */
-.cta-band{padding:0 60px;background:var(--black);border-top:1px solid var(--border)}
-.cta-band-inner{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:70px 0;border-bottom:1px solid var(--border);gap:40px;
-}
-.cta-band-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,4vw,56px);line-height:1;color:var(--white);margin-bottom:12px}
-.cta-band-title span{color:var(--orange)}
-.cta-band-inner>div>p{font-size:14px;color:var(--grey)}
+    .nav-links {
+      display: flex;
+      gap: 34px;
+      list-style: none;
+      align-items: center;
+    }
 
-/* ── PAGE HERO (inner) ── */
-.page-hero{
-  padding:160px 60px 80px;position:relative;overflow:hidden;
-  background:var(--black);border-bottom:1px solid var(--border);
-}
-.page-hero::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 50% 80% at 80% 50%,rgba(245,107,0,.08) 0%,transparent 70%);
-}
-.page-hero-grid{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:72px 72px;
-  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 0%,transparent 100%);
-}
-.page-hero-content{position:relative;z-index:2;max-width:700px}
-.page-breadcrumb{
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--grey);margin-bottom:24px;
-}
-.page-breadcrumb a{color:var(--grey);cursor:pointer;transition:color .2s}
-.page-breadcrumb a:hover{color:var(--orange)}
-.page-breadcrumb span{color:var(--orange)}
-.page-hero h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(52px,7vw,90px);line-height:.95;
-  color:var(--white);margin-bottom:20px;
-}
-.page-hero h1 span{color:var(--orange)}
-.page-hero p{font-size:16px;line-height:1.75;color:var(--lgrey);font-weight:300;max-width:520px}
+    .nav-links li a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--lgrey);
+      transition: color .2s;
+      cursor: pointer;
+      position: relative;
+    }
 
-/* ── DIENSTEN PAGE ── */
-.diensten-section{padding:90px 60px}
-.diensten-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:1px;background:var(--border);
-  border:1px solid var(--border);border-radius:4px;overflow:hidden;
-}
-.dienst-card{
-  background:var(--card);padding:48px 44px;
-  transition:background .3s;cursor:default;position:relative;overflow:hidden;
-}
-.dienst-card:hover{background:var(--card2)}
-.dienst-card::before{
-  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
-  background:var(--orange);opacity:0;transition:opacity .3s;
-}
-.dienst-card:hover::before{opacity:1}
-.dienst-card-icon{
-  width:52px;height:52px;border-radius:4px;
-  background:rgba(245,107,0,.1);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--orange);margin-bottom:28px;
-}
-.dienst-card h3{font-size:20px;font-weight:700;color:var(--white);margin-bottom:12px}
-.dienst-card p{font-size:14px;line-height:1.75;color:var(--grey);font-weight:300}
-.dienst-card ul{margin-top:16px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.dienst-card ul li{font-size:13px;color:var(--lgrey);display:flex;align-items:center;gap:10px}
-.dienst-card ul li::before{content:'→';color:var(--orange);font-size:12px}
+    .nav-links li a:hover {
+      color: var(--white);
+    }
 
-.prijzen-section{
-  background:var(--dark);padding:90px 60px;
-  border-top:1px solid var(--border);
-}
-.prijzen-intro{max-width:560px;margin-bottom:48px}
-.prijzen-table{width:100%;border-collapse:collapse}
-.prijzen-table th{
-  text-align:left;padding:16px 24px;
-  font-size:11px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--grey);border-bottom:1px solid var(--border);
-}
-.prijzen-table td{
-  padding:20px 24px;font-size:14px;color:var(--lgrey);
-  border-bottom:1px solid rgba(255,255,255,.04);
-}
-.prijzen-table tr:hover td{background:var(--card);color:var(--white)}
-.price{color:var(--orange);font-weight:700;font-size:15px}
-.price-note{font-size:12px;color:var(--grey);margin-top:16px;font-style:italic}
+    .nav-links li a.active {
+      color: var(--white);
+    }
 
-/* ── OVER ONS ── */
-.about-split{
-  padding:90px 60px;
-  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
-}
-.values-section{
-  background:var(--dark);padding:90px 60px;
-  border-top:1px solid var(--border);
-}
-.values-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:48px}
-.value-card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:4px;padding:40px;transition:border-color .2s;
-}
-.value-card:hover{border-color:rgba(245,107,0,.35)}
-.value-num{
-  font-family:'Bebas Neue',sans-serif;font-size:56px;
-  color:rgba(245,107,0,.15);line-height:1;margin-bottom:20px;
-}
-.value-card h3{font-size:18px;font-weight:700;color:var(--white);margin-bottom:12px}
-.value-card p{font-size:14px;line-height:1.75;color:var(--grey);font-weight:300}
-.quote-section{padding:90px 60px;border-top:1px solid var(--border)}
-.quote-block{
-  background:var(--card);border:1px solid var(--border);
-  border-left:3px solid var(--orange);
-  border-radius:0 4px 4px 0;padding:44px 48px;
-  max-width:800px;margin:0 auto;
-}
-.quote-block blockquote{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(24px,3vw,36px);line-height:1.2;
-  color:var(--white);letter-spacing:.5px;margin-bottom:20px;
-}
-.quote-block cite{font-size:13px;color:var(--grey);font-style:normal;letter-spacing:1px;text-transform:uppercase}
+    .nav-links li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--orange);
+    }
 
-/* ── AFSPRAAK ── */
-.afspraak-section{
-  padding:80px 60px 120px;
-  display:grid;grid-template-columns:1fr 1.3fr;gap:80px;align-items:start;
-}
-.afspraak-info-title{
-  font-family:'Bebas Neue',sans-serif;font-size:42px;
-  color:var(--white);margin-bottom:16px;line-height:1;
-}
-.afspraak-info-title span{color:var(--orange)}
-.afspraak-info>.body-text{margin-bottom:0}
-.contact-items{margin-top:40px;display:flex;flex-direction:column}
-.contact-item{
-  display:flex;align-items:flex-start;gap:16px;
-  padding:22px 0;border-bottom:1px solid var(--border);
-}
-.contact-item:first-child{border-top:1px solid var(--border)}
-.contact-icon{
-  width:40px;height:40px;border-radius:3px;
-  background:rgba(245,107,0,.1);color:var(--orange);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.contact-item strong{display:block;font-size:12px;font-weight:700;color:var(--white);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
-.contact-item p,.contact-item a{font-size:14px;color:var(--lgrey)}
-.contact-item a:hover{color:var(--orange)}
-.afspraak-form{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:4px;padding:48px;
-}
-.afspraak-form h3{
-  font-family:'Bebas Neue',sans-serif;font-size:28px;
-  color:var(--white);margin-bottom:8px;letter-spacing:1px;
-}
-.afspraak-form .form-sub{font-size:13px;color:var(--grey);margin-bottom:32px}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{margin-bottom:18px;display:flex;flex-direction:column}
-.form-group label{
-  font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:var(--grey);margin-bottom:8px;
-}
-.form-group input,.form-group select,.form-group textarea{
-  background:var(--black);border:1px solid var(--border);
-  border-radius:3px;padding:13px 15px;
-  font-size:14px;font-family:'DM Sans',sans-serif;
-  color:var(--white);outline:none;transition:border-color .2s;
-  -webkit-appearance:none;
-}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--orange)}
-.form-group input::placeholder,.form-group textarea::placeholder{color:#3a3a3a}
-.form-group select option{background:var(--dark)}
-.form-group textarea{resize:vertical;min-height:110px}
-.form-submit{
-  width:100%;padding:16px;border:none;cursor:pointer;
-  background:var(--orange);color:var(--black);
-  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;border-radius:3px;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:background .2s,transform .2s;
-}
-.form-submit:hover{background:var(--orange2);transform:translateY(-2px)}
-.form-note{font-size:12px;color:var(--grey);margin-top:14px;text-align:center;line-height:1.6}
-.form-success{
-  display:none;text-align:center;padding:60px 20px;
-}
-.form-success .check{font-size:56px;margin-bottom:16px}
-.form-success h4{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);margin-bottom:8px}
-.form-success p{font-size:14px;color:var(--grey);line-height:1.7}
+    .nav-cta {
+      background: var(--orange) !important;
+      color: var(--black) !important;
+      padding: 10px 20px;
+      border-radius: 3px;
+      font-weight: 700 !important;
+    }
 
-/* ── FOOTER ── */
-footer{background:var(--dark);border-top:1px solid var(--border)}
-.footer-top{
-  display:grid;grid-template-columns:2fr 1fr 1fr;
-  gap:60px;padding:60px 60px 40px;
-}
-.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--white);margin-bottom:14px}
-.footer-logo span{color:var(--orange)}
-.footer-brand p{font-size:14px;color:var(--grey);line-height:1.7;margin-bottom:16px}
-.footer-email-link{color:var(--orange);font-size:14px;transition:opacity .2s}
-.footer-email-link:hover{opacity:.8}
-.footer-nav strong{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:20px}
-.footer-nav ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-.footer-nav ul li,.footer-nav ul a{font-size:14px;color:var(--grey);cursor:pointer;transition:color .2s}
-.footer-nav ul a:hover{color:var(--orange)}
-.footer-bottom{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:20px 60px;border-top:1px solid var(--border);
-  font-size:11px;color:#333;letter-spacing:1px;
-}
+    .nav-cta:hover {
+      background: var(--orange2) !important;
+    }
 
-/* ── ANIMATIONS ── */
-@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-@keyframes floatIn{from{opacity:0;transform:translateY(-52%) translateX(50px)}to{opacity:.12;transform:translateY(-52%) translateX(0)}}
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+    .nav-cta.active::after {
+      display: none !important;
+    }
 
-/* ── RESPONSIVE ── */
-@media(max-width:960px){
-  nav{padding:18px 24px!important}
-  .nav-links{display:none!important}
-  .nav-toggle{display:flex}
-  .hero-content{padding:100px 24px 50px}
-  .hero-visual{display:none}
-  .hero-stats{grid-template-columns:1fr}
-  .stat-item{border-right:none!important;border-bottom:1px solid var(--border);padding:18px 24px}
-  .usp-strip{flex-direction:column}
-  .usp-divider{width:100%;height:1px}
-  .usp-item{padding:24px}
-  .split-section{grid-template-columns:1fr;gap:50px;padding:60px 24px}
-  .split-badge{bottom:-12px;right:-8px}
-  .services-preview{padding:60px 24px}
-  .services-preview-header{flex-direction:column;align-items:flex-start;gap:20px}
-  .services-grid-home{grid-template-columns:1fr 1fr}
-  .cta-band{padding:0 24px}
-  .cta-band-inner{flex-direction:column;align-items:flex-start;padding:50px 0}
-  .page-hero{padding:120px 24px 60px}
-  .diensten-section{padding:60px 24px}
-  .diensten-grid{grid-template-columns:1fr}
-  .prijzen-section{padding:60px 24px}
-  .about-split{grid-template-columns:1fr;gap:50px;padding:60px 24px}
-  .values-section{padding:60px 24px}
-  .values-grid{grid-template-columns:1fr}
-  .quote-section{padding:60px 24px}
-  .afspraak-section{grid-template-columns:1fr;gap:40px;padding:60px 24px 80px}
-  .form-row{grid-template-columns:1fr}
-  .afspraak-form{padding:28px}
-  .footer-top{grid-template-columns:1fr;gap:36px;padding:40px 24px 30px}
-  .footer-bottom{flex-direction:column;gap:8px;padding:16px 24px;text-align:center}
-}
-</style>
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 201;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: .3s;
+    }
+
+    .nav-toggle.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 9, 9, .97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      z-index: 199;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      letter-spacing: 3px;
+      color: var(--lgrey);
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .mobile-menu a:hover,
+    .mobile-menu a.active {
+      color: var(--orange);
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: var(--black) !important;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 3px;
+      cursor: pointer;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: background .2s, transform .2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary svg {
+      transition: transform .2s;
+    }
+
+    .btn-primary:hover svg {
+      transform: translateX(4px);
+    }
+
+    .btn-large {
+      padding: 18px 36px;
+      font-size: 13px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--lgrey);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 14px 28px;
+      border-radius: 3px;
+      cursor: pointer;
+      background: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s, color .2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--lgrey);
+      color: var(--white);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: var(--orange);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px, 5vw, 64px);
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .body-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--lgrey);
+      font-weight: 300;
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 55% at 72% 50%, rgba(245, 107, 0, .11) 0%, transparent 70%),
+        radial-gradient(ellipse 35% 50% at 15% 85%, rgba(245, 107, 0, .05) 0%, transparent 60%);
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .022) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, black 20%, transparent 100%);
+    }
+
+    .hero-visual {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-52%);
+      width: 52%;
+      max-width: 780px;
+      z-index: 1;
+      opacity: 0.12;
+      animation: floatIn 1.3s .2s ease both;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 130px 60px 60px;
+      max-width: 680px;
+      animation: fadeUp .9s ease both;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--orange);
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(70px, 11vw, 130px);
+      line-height: .9;
+      letter-spacing: 1px;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .hero-title span {
+      color: var(--orange);
+    }
+
+    .hero-sub {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(18px, 2.5vw, 28px);
+      letter-spacing: 8px;
+      color: var(--grey);
+      margin-bottom: 32px;
+      text-transform: uppercase;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--lgrey);
+      font-weight: 300;
+      max-width: 460px;
+      margin-bottom: 44px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      animation: fadeUp .9s .35s ease both;
+    }
+
+    .stat-item {
+      padding: 26px 40px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child {
+      border-right: none;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 38px;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .stat-num span {
+      color: var(--orange);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--grey);
+      letter-spacing: 1px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .usp-strip {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: stretch;
+    }
+
+    .usp-item {
+      flex: 1;
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .usp-divider {
+      width: 1px;
+      background: var(--border);
+    }
+
+    .usp-icon {
+      color: var(--orange);
+      flex-shrink: 0;
+    }
+
+    .usp-item strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .usp-item p {
+      font-size: 13px;
+      color: var(--grey);
+    }
+
+    .split-section {
+      padding: 110px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+      align-items: center;
+    }
+
+    .split-image {
+      position: relative;
+    }
+
+    .split-img-inner {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1c1f 0%, #0f1012 100%);
+      color: var(--grey);
+      gap: 12px;
+    }
+
+    .img-placeholder span {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .split-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--orange);
+      color: var(--black);
+      padding: 20px 24px;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .split-badge-icon {
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .services-preview {
+      background: var(--dark);
+      padding: 90px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .services-preview-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .services-preview-header .section-title {
+      margin-bottom: 0;
+    }
+
+    .services-grid-home {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .svc-card {
+      background: var(--card);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background .3s;
+      cursor: default;
+    }
+
+    .svc-card:hover {
+      background: var(--card2);
+    }
+
+    .svc-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--orange);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .svc-card:hover::after {
+      opacity: 1;
+    }
+
+    .svc-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 52px;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 24px;
+      transition: color .3s;
+    }
+
+    .svc-card:hover .svc-num {
+      color: rgba(245, 107, 0, .2);
+    }
+
+    .svc-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .svc-card p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--grey);
+      font-weight: 300;
+    }
+
+    .cta-band {
+      padding: 0 60px;
+      background: var(--black);
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-band-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 70px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 40px;
+    }
+
+    .cta-band-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 4vw, 56px);
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .cta-band-title span {
+      color: var(--orange);
+    }
+
+    .cta-band-inner > div > p {
+      font-size: 14px;
+      color: var(--grey);
+    }
+
+    .page-hero {
+      padding: 160px 60px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--black);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 80% at 80% 50%, rgba(245, 107, 0, .08) 0%, transparent 70%);
+    }
+
+    .page-hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 100%);
+    }
+
+    .page-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .page-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 24px;
+    }
+
+    .page-breadcrumb a {
+      color: var(--grey);
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .page-breadcrumb a:hover {
+      color: var(--orange);
+    }
+
+    .page-breadcrumb span {
+      color: var(--orange);
+    }
+
+    .page-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 7vw, 90px);
+      line-height: .95;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .page-hero h1 span {
+      color: var(--orange);
+    }
+
+    .page-hero p {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--lgrey);
+      font-weight: 300;
+      max-width: 520px;
+    }
+
+    .diensten-section {
+      padding: 90px 60px;
+    }
+
+    .diensten-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .dienst-card {
+      background: var(--card);
+      padding: 48px 44px;
+      transition: background .3s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dienst-card:hover {
+      background: var(--card2);
+    }
+
+    .dienst-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--orange);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .dienst-card:hover::before {
+      opacity: 1;
+    }
+
+    .dienst-card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 4px;
+      background: rgba(245, 107, 0, .1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--orange);
+      margin-bottom: 28px;
+    }
+
+    .dienst-card h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .dienst-card p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--grey);
+      font-weight: 300;
+    }
+
+    .dienst-card ul {
+      margin-top: 16px;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dienst-card ul li {
+      font-size: 13px;
+      color: var(--lgrey);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dienst-card ul li::before {
+      content: '→';
+      color: var(--orange);
+      font-size: 12px;
+    }
+
+    .prijzen-section {
+      background: var(--dark);
+      padding: 90px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .prijzen-intro {
+      max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    .prijzen-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .prijzen-table th {
+      text-align: left;
+      padding: 16px 24px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .prijzen-table td {
+      padding: 20px 24px;
+      font-size: 14px;
+      color: var(--lgrey);
+      border-bottom: 1px solid rgba(255, 255, 255, .04);
+    }
+
+    .prijzen-table tr:hover td {
+      background: var(--card);
+      color: var(--white);
+    }
+
+    .price {
+      color: var(--orange);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .price-note {
+      font-size: 12px;
+      color: var(--grey);
+      margin-top: 16px;
+      font-style: italic;
+    }
+
+    .about-split {
+      padding: 90px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .values-section {
+      background: var(--dark);
+      padding: 90px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 40px;
+      transition: border-color .2s;
+    }
+
+    .value-card:hover {
+      border-color: rgba(245, 107, 0, .35);
+    }
+
+    .value-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      color: rgba(245, 107, 0, .15);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .value-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .value-card p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--grey);
+      font-weight: 300;
+    }
+
+    .quote-section {
+      padding: 90px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .quote-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 4px 4px 0;
+      padding: 44px 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.2;
+      color: var(--white);
+      letter-spacing: .5px;
+      margin-bottom: 20px;
+    }
+
+    .quote-block cite {
+      font-size: 13px;
+      color: var(--grey);
+      font-style: normal;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .afspraak-section {
+      padding: 80px 60px 120px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .afspraak-info-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--white);
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .afspraak-info-title span {
+      color: var(--orange);
+    }
+
+    .afspraak-info > .body-text {
+      margin-bottom: 0;
+    }
+
+    .contact-items {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .contact-item:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 3px;
+      background: rgba(245, 107, 0, .1);
+      color: var(--orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-item strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .contact-item p,
+    .contact-item a {
+      font-size: 14px;
+      color: var(--lgrey);
+    }
+
+    .contact-item a:hover {
+      color: var(--orange);
+    }
+
+    .afspraak-form {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 48px;
+    }
+
+    .afspraak-form h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      color: var(--white);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .afspraak-form .form-sub {
+      font-size: 13px;
+      color: var(--grey);
+      margin-bottom: 32px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--black);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 13px 15px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--white);
+      outline: none;
+      transition: border-color .2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--orange);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #3a3a3a;
+    }
+
+    .form-group select option {
+      background: var(--dark);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      cursor: pointer;
+      background: var(--orange);
+      color: var(--black);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background .2s, transform .2s;
+    }
+
+    .form-submit:hover {
+      background: var(--orange2);
+      transform: translateY(-2px);
+    }
+
+    .form-note {
+      font-size: 12px;
+      color: var(--grey);
+      margin-top: 14px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .form-success .check {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+
+    .form-success h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .form-success p {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+      padding: 60px 60px 40px;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .footer-logo span {
+      color: var(--orange);
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .footer-email-link {
+      color: var(--orange);
+      font-size: 14px;
+      transition: opacity .2s;
+    }
+
+    .footer-email-link:hover {
+      opacity: .8;
+    }
+
+    .footer-nav strong {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .footer-nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav ul li,
+    .footer-nav ul a {
+      font-size: 14px;
+      color: var(--grey);
+      cursor: pointer;
+      transition: color .2s;
+    }
+
+    .footer-nav ul a:hover {
+      color: var(--orange);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: #333;
+      letter-spacing: 1px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(-52%) translateX(50px); }
+      to { opacity: .12; transform: translateY(-52%) translateX(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 960px) {
+      nav { padding: 18px 24px !important; }
+      .nav-links { display: none !important; }
+      .nav-toggle { display: flex; }
+      .hero-content { padding: 100px 24px 50px; }
+      .hero-visual { display: none; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .stat-item { border-right: none !important; border-bottom: 1px solid var(--border); padding: 18px 24px; }
+      .usp-strip { flex-direction: column; }
+      .usp-divider { width: 100%; height: 1px; }
+      .usp-item { padding: 24px; }
+      .split-section { grid-template-columns: 1fr; gap: 50px; padding: 60px 24px; }
+      .split-badge { bottom: -12px; right: -8px; }
+      .services-preview { padding: 60px 24px; }
+      .services-preview-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .services-grid-home { grid-template-columns: 1fr 1fr; }
+      .cta-band { padding: 0 24px; }
+      .cta-band-inner { flex-direction: column; align-items: flex-start; padding: 50px 0; }
+      .page-hero { padding: 120px 24px 60px; }
+      .diensten-section { padding: 60px 24px; }
+      .diensten-grid { grid-template-columns: 1fr; }
+      .prijzen-section { padding: 60px 24px; }
+      .about-split { grid-template-columns: 1fr; gap: 50px; padding: 60px 24px; }
+      .values-section { padding: 60px 24px; }
+      .values-grid { grid-template-columns: 1fr; }
+      .quote-section { padding: 60px 24px; }
+      .afspraak-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px 80px; }
+      .form-row { grid-template-columns: 1fr; }
+      .afspraak-form { padding: 28px; }
+      .footer-top { grid-template-columns: 1fr; gap: 36px; padding: 40px 24px 30px; }
+      .footer-bottom { flex-direction: column; gap: 8px; padding: 16px 24px; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ══ NAV ══ -->
 <nav id="mainNav">
   <div class="nav-logo" onclick="navigate('home')"><span>SVP</span>-Scooters</div>
   <ul class="nav-links">
@@ -503,7 +1316,6 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
   </button>
 </nav>
 
-<!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
   <a onclick="navigate('home');closeMenu()" data-page="home">Home</a>
   <a onclick="navigate('diensten');closeMenu()" data-page="diensten">Diensten</a>
@@ -511,9 +1323,6 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
   <a onclick="navigate('afspraak');closeMenu()" data-page="afspraak" style="color:var(--orange)">Afspraak maken</a>
 </div>
 
-<!-- ══════════════════════════════════════════
-     PAGE: HOME
-══════════════════════════════════════════ -->
 <div class="page active" id="page-home">
 
   <section class="hero">
@@ -536,31 +1345,64 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
       <p class="hero-sub">Jouw scooter, onze zorg</p>
       <p class="hero-desc">Vakkundige scooter­reparatie met persoonlijke aandacht. Snel, eerlijk en transparant – bij ons ben je geen nummer.</p>
       <div class="hero-actions">
-        <button class="btn-primary" onclick="navigate('afspraak')">Afspraak maken <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        <button class="btn-primary" onclick="navigate('afspraak')">
+          Afspraak maken
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
         <button class="btn-secondary" onclick="navigate('diensten')">Onze diensten</button>
       </div>
     </div>
     <div class="hero-stats">
-      <div class="stat-item"><div class="stat-num">48<span>–72u</span></div><div class="stat-label">Reparatietijd</div></div>
-      <div class="stat-item"><div class="stat-num">A<span>-merk</span></div><div class="stat-label">Onderdelen</div></div>
-      <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-label">Transparant</div></div>
+      <div class="stat-item">
+        <div class="stat-num">48<span>–72u</span></div>
+        <div class="stat-label">Reparatietijd</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">A<span>-merk</span></div>
+        <div class="stat-label">Onderdelen</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Transparant</div>
+      </div>
     </div>
   </section>
 
   <div class="usp-strip">
     <div class="usp-item reveal">
-      <div class="usp-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M16 8l-4 4-4-4M12 12v6"/></svg></div>
-      <div><strong>Scherpe prijzen</strong><p>Geen voorraad = actuele prijs</p></div>
+      <div class="usp-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/><path d="M16 8l-4 4-4-4M12 12v6"/>
+        </svg>
+      </div>
+      <div>
+        <strong>Scherpe prijzen</strong>
+        <p>Geen voorraad = actuele prijs</p>
+      </div>
     </div>
     <div class="usp-divider"></div>
     <div class="usp-item reveal">
-      <div class="usp-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
-      <div><strong>Vakkundige reparatie</strong><p>Professioneel gereedschap &amp; A-merk</p></div>
+      <div class="usp-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <div>
+        <strong>Vakkundige reparatie</strong>
+        <p>Professioneel gereedschap &amp; A-merk</p>
+      </div>
     </div>
     <div class="usp-divider"></div>
     <div class="usp-item reveal">
-      <div class="usp-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-      <div><strong>Snelle service</strong><p>Voertuig binnen 48–72 uur terug</p></div>
+      <div class="usp-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+      </div>
+      <div>
+        <strong>Snelle service</strong>
+        <p>Voertuig binnen 48–72 uur terug</p>
+      </div>
     </div>
   </div>
 
@@ -569,13 +1411,19 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
       <div class="split-img-inner">
         <img src="scooter-rood.jpg" style="width:100%;height:100%;object-fit:cover">
       </div>
-      <div class="split-badge"><div class="split-badge-icon">★</div>Vakmanschap<br>&amp; passie</div>
+      <div class="split-badge">
+        <div class="split-badge-icon">★</div>
+        Vakmanschap<br>&amp; passie
+      </div>
     </div>
     <div class="split-content reveal">
       <p class="section-label">Kleine garage</p>
       <h2 class="section-title">Persoonlijke<br>aandacht voor<br>jouw scooter</h2>
       <p class="body-text">Bij ons draait het niet om kwantiteit, maar om kwaliteit. Als kleine scootergarage kennen we onze klanten én hun scooters door en door. Dat merk je meteen aan de service en de sfeer.</p>
-      <button class="btn-primary" onclick="navigate('over')" style="margin-top:32px">Meer over ons <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-primary" onclick="navigate('over')" style="margin-top:32px">
+        Meer over ons
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </section>
 
@@ -588,10 +1436,26 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
       <button class="btn-secondary" onclick="navigate('diensten')">Alle diensten bekijken</button>
     </div>
     <div class="services-grid-home">
-      <div class="svc-card reveal"><div class="svc-num">01</div><h3>Onderhoud &amp; APK</h3><p>Periodiek onderhoud, oliebeurt, remcontrole en APK-keuring voor alle merken.</p></div>
-      <div class="svc-card reveal"><div class="svc-num">02</div><h3>Motorreparatie</h3><p>Van cilinderpakking tot carburateur – wij lossen alle motorproblemen op.</p></div>
-      <div class="svc-card reveal"><div class="svc-num">03</div><h3>Electrische systemen</h3><p>Diagnose en reparatie van accu, verlichting en startproblemen.</p></div>
-      <div class="svc-card reveal"><div class="svc-num">04</div><h3>Tuning</h3><p>Performance-upgrades voor meer vermogen en rijplezier op maat.</p></div>
+      <div class="svc-card reveal">
+        <div class="svc-num">01</div>
+        <h3>Onderhoud &amp; APK</h3>
+        <p>Periodiek onderhoud, oliebeurt, remcontrole en APK-keuring voor alle merken.</p>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-num">02</div>
+        <h3>Motorreparatie</h3>
+        <p>Van cilinderpakking tot carburateur – wij lossen alle motorproblemen op.</p>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-num">03</div>
+        <h3>Electrische systemen</h3>
+        <p>Diagnose en reparatie van accu, verlichting en startproblemen.</p>
+      </div>
+      <div class="svc-card reveal">
+        <div class="svc-num">04</div>
+        <h3>Tuning</h3>
+        <p>Performance-upgrades voor meer vermogen en rijplezier op maat.</p>
+      </div>
     </div>
   </section>
 
@@ -601,7 +1465,10 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <h2 class="cta-band-title">Klaar voor een<br><span>afspraak?</span></h2>
         <p>Stuur ons een bericht en we plannen zo snel mogelijk in.</p>
       </div>
-      <button class="btn-primary btn-large" onclick="navigate('afspraak')">Afspraak maken <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-primary btn-large" onclick="navigate('afspraak')">
+        Afspraak maken
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </section>
 
@@ -630,19 +1497,23 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 SVP-Scooters</span><span>Alle rechten voorbehouden</span></div>
+    <div class="footer-bottom">
+      <span>© 2025 SVP-Scooters</span>
+      <span>Alle rechten voorbehouden</span>
+    </div>
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     PAGE: DIENSTEN
-══════════════════════════════════════════ -->
 <div class="page" id="page-diensten">
 
   <div class="page-hero">
     <div class="page-hero-grid"></div>
     <div class="page-hero-content">
-      <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a> <span>/</span> <span>Diensten</span></div>
+      <div class="page-breadcrumb">
+        <a onclick="navigate('home')">Home</a>
+        <span>/</span>
+        <span>Diensten</span>
+      </div>
       <h1>Onze <span>Diensten</span></h1>
       <p>Van periodiek onderhoud tot vakkundige reparatie – wij verzorgen alles voor jouw scooter. Altijd met originele onderdelen en professioneel gereedschap.</p>
     </div>
@@ -651,7 +1522,11 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
   <section class="diensten-section">
     <div class="diensten-grid">
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+          </svg>
+        </div>
         <h3>Onderhoud &amp; APK</h3>
         <p>Regelmatig onderhoud is essentieel voor een betrouwbare scooter. Wij voeren complete onderhoudsbeurt­en uit voor alle merken en modellen.</p>
         <ul>
@@ -663,7 +1538,13 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/>
+          </svg>
+        </div>
         <h3>Motorreparatie</h3>
         <p>Motorproblemen lossen we snel en vakkundig op. We werken uitsluitend met originele of A-merk onderdelen voor optimale kwaliteit.</p>
         <ul>
@@ -675,7 +1556,11 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
         <h3>Electrische systemen</h3>
         <p>Elektrische problemen kunnen lastig zijn om te diagnosticeren. Met professionele meetapparatuur vinden wij elke storing snel.</p>
         <ul>
@@ -687,7 +1572,11 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
         <h3>Tuning</h3>
         <p>Haal meer uit jouw scooter met gerichte performance-upgrades. Altijd binnen de wettelijke grenzen en afgestemd op jouw rijstijl.</p>
         <ul>
@@ -699,7 +1588,11 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
         <h3>Banden &amp; wielophanging</h3>
         <p>Goede banden zijn cruciaal voor je veiligheid. Wij wisselen banden van alle maten en controleren ook de wielophanging.</p>
         <ul>
@@ -711,7 +1604,11 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </ul>
       </div>
       <div class="dienst-card reveal">
-        <div class="dienst-card-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="dienst-card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
         <h3>Remmen &amp; veiligheid</h3>
         <p>Veilig rijden begint bij goede remmen. We controleren en vervangen alle remonderdelen voor optimale stopprestaties.</p>
         <ul>
@@ -740,18 +1637,49 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         </tr>
       </thead>
       <tbody>
-        <tr><td>Kleine beurt</td><td>Oliewissel, filter, controle</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Grote beurt</td><td>Complete onderhoudsbeurt</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Bandenwisseling</td><td>Per band, incl. balanceren</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Remblokken</td><td>Vervanging voor of achter</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Accu vervanging</td><td>Inclusief accu A-merk</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Diagnose</td><td>Elektrisch of mechanisch</td><td class="price">Op aanvraag</td></tr>
-        <tr><td>Tuning pakket</td><td>Afhankelijk van gewenste aanpassingen</td><td class="price">Op aanvraag</td></tr>
+        <tr>
+          <td>Kleine beurt</td>
+          <td>Oliewissel, filter, controle</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Grote beurt</td>
+          <td>Complete onderhoudsbeurt</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Bandenwisseling</td>
+          <td>Per band, incl. balanceren</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Remblokken</td>
+          <td>Vervanging voor of achter</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Accu vervanging</td>
+          <td>Inclusief accu A-merk</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Diagnose</td>
+          <td>Elektrisch of mechanisch</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
+        <tr>
+          <td>Tuning pakket</td>
+          <td>Afhankelijk van gewenste aanpassingen</td>
+          <td class="price">Op aanvraag</td>
+        </tr>
       </tbody>
     </table>
     <p class="price-note">* Alle prijzen zijn inclusief arbeidskosten. Onderdelen worden apart berekend op actuele inkoopprijs.</p>
     <div style="margin-top:40px">
-      <button class="btn-primary" onclick="navigate('afspraak')">Vraag een prijsopgave aan <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-primary" onclick="navigate('afspraak')">
+        Vraag een prijsopgave aan
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </section>
 
@@ -761,7 +1689,10 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <h2 class="cta-band-title">Probleem met<br><span>jouw scooter?</span></h2>
         <p>Maak een afspraak en we kijken het snel voor je na.</p>
       </div>
-      <button class="btn-primary btn-large" onclick="navigate('afspraak')">Afspraak maken <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-primary btn-large" onclick="navigate('afspraak')">
+        Afspraak maken
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </section>
 
@@ -772,22 +1703,41 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <p>Jouw scooter, onze zorg.<br>Vakkundige reparatie in Veghel.</p>
         <a href="mailto:info@svp-scooters.nl" class="footer-email-link">info@svp-scooters.nl</a>
       </div>
-      <div class="footer-nav"><strong>Navigatie</strong><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('diensten')">Diensten</a></li><li><a onclick="navigate('over')">Over ons</a></li><li><a onclick="navigate('afspraak')">Afspraak maken</a></li></ul></div>
-      <div class="footer-nav"><strong>Contact</strong><ul><li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li><li>Veghel</li><li>Ma–Vr: op afspraak</li></ul></div>
+      <div class="footer-nav">
+        <strong>Navigatie</strong>
+        <ul>
+          <li><a onclick="navigate('home')">Home</a></li>
+          <li><a onclick="navigate('diensten')">Diensten</a></li>
+          <li><a onclick="navigate('over')">Over ons</a></li>
+          <li><a onclick="navigate('afspraak')">Afspraak maken</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <strong>Contact</strong>
+        <ul>
+          <li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li>
+          <li>Veghel</li>
+          <li>Ma–Vr: op afspraak</li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 SVP-Scooters</span><span>Alle rechten voorbehouden</span></div>
+    <div class="footer-bottom">
+      <span>© 2025 SVP-Scooters</span>
+      <span>Alle rechten voorbehouden</span>
+    </div>
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     PAGE: OVER ONS
-══════════════════════════════════════════ -->
 <div class="page" id="page-over">
 
   <div class="page-hero">
     <div class="page-hero-grid"></div>
     <div class="page-hero-content">
-      <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a> <span>/</span> <span>Over ons</span></div>
+      <div class="page-breadcrumb">
+        <a onclick="navigate('home')">Home</a>
+        <span>/</span>
+        <span>Over ons</span>
+      </div>
       <h1>Over <span>SVP-Scooters</span></h1>
       <p>Een kleine garage met een groot hart voor scooters. We kennen onze klanten, we kennen hun scooters, en we gaan voor kwaliteit boven kwantiteit.</p>
     </div>
@@ -798,7 +1748,10 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
       <div class="split-img-inner">
         <img src="scooter-dominos.jpg" style="width:100%;height:100%;object-fit:cover">
       </div>
-      <div class="split-badge"><div class="split-badge-icon">★</div>Vakmanschap<br>&amp; passie</div>
+      <div class="split-badge">
+        <div class="split-badge-icon">★</div>
+        Vakmanschap<br>&amp; passie
+      </div>
     </div>
     <div class="reveal">
       <p class="section-label">Ons verhaal</p>
@@ -848,7 +1801,10 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <h2 class="cta-band-title">Leer ons<br><span>kennen?</span></h2>
         <p>Maak een afspraak en kom langs in onze garage.</p>
       </div>
-      <button class="btn-primary btn-large" onclick="navigate('afspraak')">Afspraak maken <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      <button class="btn-primary btn-large" onclick="navigate('afspraak')">
+        Afspraak maken
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </section>
 
@@ -859,22 +1815,41 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <p>Jouw scooter, onze zorg.<br>Vakkundige reparatie in Veghel.</p>
         <a href="mailto:info@svp-scooters.nl" class="footer-email-link">info@svp-scooters.nl</a>
       </div>
-      <div class="footer-nav"><strong>Navigatie</strong><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('diensten')">Diensten</a></li><li><a onclick="navigate('over')">Over ons</a></li><li><a onclick="navigate('afspraak')">Afspraak maken</a></li></ul></div>
-      <div class="footer-nav"><strong>Contact</strong><ul><li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li><li>Veghel</li><li>Ma–Vr: op afspraak</li></ul></div>
+      <div class="footer-nav">
+        <strong>Navigatie</strong>
+        <ul>
+          <li><a onclick="navigate('home')">Home</a></li>
+          <li><a onclick="navigate('diensten')">Diensten</a></li>
+          <li><a onclick="navigate('over')">Over ons</a></li>
+          <li><a onclick="navigate('afspraak')">Afspraak maken</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <strong>Contact</strong>
+        <ul>
+          <li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li>
+          <li>Veghel</li>
+          <li>Ma–Vr: op afspraak</li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 SVP-Scooters</span><span>Alle rechten voorbehouden</span></div>
+    <div class="footer-bottom">
+      <span>© 2025 SVP-Scooters</span>
+      <span>Alle rechten voorbehouden</span>
+    </div>
   </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     PAGE: AFSPRAAK MAKEN
-══════════════════════════════════════════ -->
 <div class="page" id="page-afspraak">
 
   <div class="page-hero">
     <div class="page-hero-grid"></div>
     <div class="page-hero-content">
-      <div class="page-breadcrumb"><a onclick="navigate('home')">Home</a> <span>/</span> <span>Afspraak maken</span></div>
+      <div class="page-breadcrumb">
+        <a onclick="navigate('home')">Home</a>
+        <span>/</span>
+        <span>Afspraak maken</span>
+      </div>
       <h1>Afspraak <span>Maken</span></h1>
       <p>Vul het formulier in en we nemen zo snel mogelijk contact met je op om een afspraak in te plannen. Vaak al dezelfde week.</p>
     </div>
@@ -887,20 +1862,51 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
       <p class="body-text">Heb je een vraag of wil je direct contact? Stuur ons een e-mail of vul het formulier in. We reageren zo snel mogelijk.</p>
       <div class="contact-items">
         <div class="contact-item">
-          <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div><strong>E-mail</strong><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></div>
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div>
+            <strong>E-mail</strong>
+            <a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a>
+          </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div><strong>Locatie</strong><p>Veghel &amp; omgeving</p></div>
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Locatie</strong>
+            <p>Veghel &amp; omgeving</p>
+          </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div><strong>Openingstijden</strong><p>Maandag – Vrijdag, op afspraak</p></div>
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Openingstijden</strong>
+            <p>Maandag – Vrijdag, op afspraak</p>
+          </div>
         </div>
         <div class="contact-item">
-          <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><strong>Reparatietijd</strong><p>Voertuig binnen 48–72 uur terug</p></div>
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <div>
+            <strong>Reparatietijd</strong>
+            <p>Voertuig binnen 48–72 uur terug</p>
+          </div>
         </div>
       </div>
     </div>
@@ -969,81 +1975,94 @@ footer{background:var(--dark);border-top:1px solid var(--border)}
         <p>Jouw scooter, onze zorg.<br>Vakkundige reparatie in Veghel.</p>
         <a href="mailto:info@svp-scooters.nl" class="footer-email-link">info@svp-scooters.nl</a>
       </div>
-      <div class="footer-nav"><strong>Navigatie</strong><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('diensten')">Diensten</a></li><li><a onclick="navigate('over')">Over ons</a></li><li><a onclick="navigate('afspraak')">Afspraak maken</a></li></ul></div>
-      <div class="footer-nav"><strong>Contact</strong><ul><li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li><li>Veghel</li><li>Ma–Vr: op afspraak</li></ul></div>
+      <div class="footer-nav">
+        <strong>Navigatie</strong>
+        <ul>
+          <li><a onclick="navigate('home')">Home</a></li>
+          <li><a onclick="navigate('diensten')">Diensten</a></li>
+          <li><a onclick="navigate('over')">Over ons</a></li>
+          <li><a onclick="navigate('afspraak')">Afspraak maken</a></li>
+        </ul>
+      </div>
+      <div class="footer-nav">
+        <strong>Contact</strong>
+        <ul>
+          <li><a href="mailto:info@svp-scooters.nl">info@svp-scooters.nl</a></li>
+          <li>Veghel</li>
+          <li>Ma–Vr: op afspraak</li>
+        </ul>
+      </div>
     </div>
-    <div class="footer-bottom"><span>© 2025 SVP-Scooters</span><span>Alle rechten voorbehouden</span></div>
+    <div class="footer-bottom">
+      <span>© 2025 SVP-Scooters</span>
+      <span>Alle rechten voorbehouden</span>
+    </div>
   </footer>
 </div>
 
 <script>
-// ── ROUTING ──
-const pages = ['home','diensten','over','afspraak'];
-let current = 'home';
+  const pages = ['home', 'diensten', 'over', 'afspraak'];
+  let current = 'home';
 
-function navigate(page) {
-  if (!pages.includes(page)) return;
-  // hide all
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  // show target
-  document.getElementById('page-' + page).classList.add('active');
-  current = page;
-  // update nav active state
-  document.querySelectorAll('.nav-links li a[data-page]').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === page);
+  function navigate(page) {
+    if (!pages.includes(page)) return;
+
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    current = page;
+
+    document.querySelectorAll('.nav-links li a[data-page]').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === page);
+    });
+
+    document.querySelectorAll('.mobile-menu a[data-page]').forEach(a => {
+      a.classList.toggle('active', a.dataset.page === page);
+    });
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    setTimeout(initReveals, 100);
+  }
+
+  function toggleMenu() {
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    toggle.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+
+  function closeMenu() {
+    document.getElementById('navToggle').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+    checkReveals();
   });
-  document.querySelectorAll('.mobile-menu a[data-page]').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === page);
+
+  function initReveals() {
+    checkReveals();
+  }
+
+  function checkReveals() {
+    const reveals = document.querySelectorAll('#page-' + current + ' .reveal:not(.visible)');
+    const wh = window.innerHeight;
+    reveals.forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < wh - 60) {
+        setTimeout(() => el.classList.add('visible'), i * 70);
+      }
+    });
+  }
+
+  function submitForm() {
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  window.addEventListener('load', () => {
+    initReveals();
   });
-  // scroll to top
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  // trigger reveals
-  setTimeout(initReveals, 100);
-}
-
-// ── MOBILE MENU ──
-function toggleMenu() {
-  const toggle = document.getElementById('navToggle');
-  const menu = document.getElementById('mobileMenu');
-  toggle.classList.toggle('open');
-  menu.classList.toggle('open');
-}
-function closeMenu() {
-  document.getElementById('navToggle').classList.remove('open');
-  document.getElementById('mobileMenu').classList.remove('open');
-}
-
-// ── SCROLL EFFECTS ──
-window.addEventListener('scroll', () => {
-  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
-  checkReveals();
-});
-
-// ── REVEAL OBSERVER ──
-function initReveals() {
-  checkReveals();
-}
-function checkReveals() {
-  const reveals = document.querySelectorAll('#page-' + current + ' .reveal:not(.visible)');
-  const wh = window.innerHeight;
-  reveals.forEach((el, i) => {
-    const rect = el.getBoundingClientRect();
-    if (rect.top < wh - 60) {
-      setTimeout(() => el.classList.add('visible'), i * 70);
-    }
-  });
-}
-
-// ── FORM SUBMIT ──
-function submitForm() {
-  document.getElementById('formContent').style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
-}
-
-// ── INIT ──
-window.addEventListener('load', () => {
-  initReveals();
-});
 </script>
 </body>
 </html>
